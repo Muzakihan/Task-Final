@@ -1,0 +1,134 @@
+<header class="bg-white">
+    <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <div class="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl text-loh">
+                    Data Wilayah Indonesia
+                </h1>
+                <p class="mt-1.5 text-sm text-gray-500">
+                    Data wilayah Indonesia dalam bentuk web sederhana
+                </p>
+
+                <div aria-label="Breadcrumb" class="flex mt-6">
+                    <ol class="flex overflow-hidden rounded-lg border border-gray-200 text-gray-600">
+                        <li class="flex items-center">
+                            <a href="/"
+                                class="flex h-10 items-center gap-1.5 bg-gray-100 px-4 transition hover:text-gray-900">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+
+                                <span class="ms-1.5 text-xs font-medium"> Home </span>
+                            </a>
+                        </li>
+
+                        <li class="relative flex items-center">
+                            <span
+                                class="absolute inset-y-0 -start-px h-10 w-4 bg-gray-100 [clip-path:_polygon(0_0,_0%_100%,_100%_50%)] rtl:rotate-180">
+                            </span>
+
+                            <a href="#"
+                                class="flex h-10 items-center bg-white pe-4 ps-8 text-xs font-medium transition hover:text-gray-900">
+                                Edit Data Kabupaten
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                {{#if user}} <!-- Cek jika pengguna sudah login -->
+                <a href="#"
+                    class="inline-flex items-center justify-center gap-1.5 rounded border border-gray-200 bg-white px-5 py-3 text-gray-900 transition hover:text-gray-700 focus:outline-none focus:ring"
+                    aria-label="User profile">
+                    <span class="text-sm font-medium">
+                        Hello, {{user.username}} <!-- Ambil username dari data pengguna -->
+                    </span>
+                </a>
+                <a href="/logout"
+                    class="inline-block rounded bg-indigo-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring"
+                    aria-label="Logout">
+                    Logout
+                </a>
+                {{else}} <!-- Jika pengguna belum login -->
+                <a href="/register"
+                    class="inline-flex items-center justify-center gap-1.5 rounded border border-gray-200 bg-white px-5 py-3 text-gray-900 transition hover:text-gray-700 focus:outline-none focus:ring"
+                    aria-label="Go to registration page">
+                    <span class="text-sm font-medium">
+                        Register
+                    </span>
+                </a>
+                <a href="/login"
+                    class="inline-block rounded bg-indigo-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring"
+                    aria-label="Go to login page">
+                    Login
+                </a>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<main class="mx-auto max-w-screen-xl">
+    <div id="defaultModal" tabindex="-1" aria-hidden="true"
+        class="flex justify-center items-center w-full md:inset-0 h-modal md:h-full">
+        <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+            <!-- Modal content -->
+            <div class="relative p-4 bg-white rounded-lg shadow sm:p-5 border-4">
+                <!-- Modal header -->
+                <div
+                    class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
+                    <h3 class="text-lg font-semibold text-gray-900 ">
+                        Edit Kabupaten
+                    </h3>
+                </div>
+                <!-- Modal body -->
+                <form action="/edit-district/{{district.id}}" method="POST" enctype="multipart/form-data">
+                    <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                        <div>
+                            <label for="nama" class="block mb-2 text-sm font-medium text-gray-900">Nama
+                                Kabupaten</label>
+                            <input type="text" name="nama" id="nama" value="{{district.nama}}"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                placeholder="Masukkan nama kabupaten" required>
+                        </div>
+                        <div>
+                            <label for="diresmikan" class="block mb-2 text-sm font-medium text-gray-900">Tanggal
+                                Diresmikan</label>
+                            <input type="date" name="diresmikan" id="diresmikan" value="{{district.diresmikan}}"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                required>
+                        </div>
+                        <div>
+                            <label for="provinsi_id"
+                                class="block mb-2 text-sm font-medium text-gray-900">Provinsi</label>
+                            <select name="provinsi_id" id="provinsi_id"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                required>
+                                <option value="" disabled>Pilih Provinsi</option>
+                                {{#each provinces}}
+                                <option value="{{this.id}}">{{this.nama}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div>
+                            <label for="photo" class="block mb-2 text-sm font-medium text-gray-900">Foto
+                                Kabupaten</label>
+                            <input type="file" name="photo" id="photo"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        </div>
+                    </div>
+                    <button type="submit"
+                        class="text-black inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Update Kabupaten
+                    </button>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</main>

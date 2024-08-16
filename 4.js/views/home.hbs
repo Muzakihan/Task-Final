@@ -1,0 +1,165 @@
+<header class="bg-white">
+    <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <div class="flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl text-loh">
+                    Data Wilayah Indonesia
+                </h1>
+                <p class="mt-1.5 text-sm text-gray-500">
+                    Data wilayah Indonesia dalam bentuk web sederhana
+                </p>
+            </div>
+
+            <div class="flex items-center gap-4">
+                {{#if user}} <!-- Cek jika pengguna sudah login -->
+                <a href="#"
+                    class="inline-flex items-center justify-center gap-1.5 rounded border border-gray-200 bg-white px-5 py-3 text-gray-900 transition hover:text-gray-700 focus:outline-none focus:ring"
+                    aria-label="User profile">
+                    <span class="text-sm font-medium">
+                        Hello, {{user.username}} <!-- Ambil username dari data pengguna -->
+                    </span>
+                </a>
+                <a href="/logout"
+                    class="inline-block rounded bg-indigo-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring"
+                    aria-label="Logout">
+                    Logout
+                </a>
+                {{else}} <!-- Jika pengguna belum login -->
+                <a href="/register"
+                    class="inline-flex items-center justify-center gap-1.5 rounded border border-gray-200 bg-white px-5 py-3 text-gray-900 transition hover:text-gray-700 focus:outline-none focus:ring"
+                    aria-label="Go to registration page">
+                    <span class="text-sm font-medium">
+                        Register
+                    </span>
+                </a>
+                <a href="/login"
+                    class="inline-block rounded bg-indigo-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-indigo-700 focus:outline-none focus:ring"
+                    aria-label="Go to login page">
+                    Login
+                </a>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-center">
+        <span class="inline-flex overflow-hidden rounded-md border-2 bg-white shadow-sm gap-2">
+            <select id="data-selector"
+                class="items-center gap-2 inline-block px-4 py-2 text-gray-700 hover:bg-gray-50 focus:relative">
+                <option value="all" selected>All Data</option>
+                <option value="provinces">Data Provinsi</option>
+                <option value="districts">Data Kabupaten</option>
+            </select>
+
+            <div class="flex items-center gap-2 inline-block px-4 py-2 text-gray-700 hover:bg-gray-50 focus:relative"
+                title="View Orders">
+                <a href="/add-province" class="flex gap-2 items-center">
+                    <i class="fa-solid fa-plus"></i>
+                    Add Provinsi
+                </a>
+            </div>
+
+            <div class="flex items-center gap-2 inline-block px-4 py-2 text-gray-700 hover:bg-gray-50 focus:relative"
+                title="View Orders">
+                <a href="/add-district" class="flex gap-2 items-center">
+                    <i class="fa-solid fa-plus"></i>
+                    Add Kabupaten
+                </a>
+            </div>
+        </span>
+    </div>
+</header>
+
+<main class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+    <div class="flex justify-evenly lg:gap-8">
+        <div class="flex flex-col gap-8 " id="provinces-container">
+            {{#each provinces}}
+            <div class="relative border-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
+                <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-clip-border rounded-xl h-80">
+                    <img src="/uploads/{{this.photo}}" alt="profile-picture" class="w-full h-full object-cover" />
+                    <a href="/province/edit/{{this.id}}"
+                        class="absolute top-4 right-4 flex items-center gap-2 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
+                        Pulau : {{this.pulau}}
+                    </a>
+                </div>
+                <div class="p-6 text-center">
+                    <h4
+                        class="block mb-2 font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                        {{this.nama}}
+                    </h4>
+                    <p
+                        class="block mb-2 font-sans text-lg antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                        Tanggal Diresmikan : {{dateString this.diresmikan}}
+                    </p>
+                    <div class="flex gap-16 mx-2 mt-4">
+                        <div class="flex gap-2">
+                            <!-- Form untuk menghapus provinsi -->
+                            <form action="/delete-province/{{this.id}}" method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete this province?');">
+                                <button type="submit"
+                                    class="flex items-center gap-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 focus:outline-none font-medium rounded-lg text-sm p-4">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </form>
+                            <a href="/edit-province/{{this.id}}"
+                                class="flex items-center gap-2 text-white bg-amber-400 hover:bg-amber-500 focus:ring-4 focus:ring-blue-300 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                        </div>
+                        <a href="/detail-province/{{this.id}}"
+                            class="w-full flex items-center justify-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            Detail
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+
+        </div>
+
+        <div class="flex flex-col gap-8 " id="districts-container">
+            {{#each districts}}
+            <div class="relative border-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
+                <div class="relative mx-4 mt-4 overflow-hidden text-gray-700 bg-clip-border rounded-xl h-80">
+                    <img src="/uploads/{{this.photo}}" alt="profile-picture" class="w-full h-full object-cover" />
+                    <a href="/districts/edit/{{this.id}}"
+                        class="absolute top-4 right-4 flex items-center gap-2 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 focus:outline-none font-medium rounded-lg text-sm px-4 py-2">
+                        Provinsi : {{this.provinsi_nama}}
+                    </a>
+                </div>
+                <div class="p-6 text-center">
+                    <h4
+                        class="block mb-2 font-sans text-2xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                        {{this.nama}}
+                    </h4>
+                    <p
+                        class="block mb-2 font-sans text-lg antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                        Tanggal Diresmikan : {{dateString this.diresmikan}}
+                    </p>
+                    <div class="flex gap-16 mx-2 mt-4">
+                        <div class="flex gap-2">
+                             <form action="/delete-district/{{this.id}}" method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete this province?');">
+                                <button type="submit"
+                                    class="flex items-center gap-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 focus:outline-none font-medium rounded-lg text-sm p-4">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </form>
+                            <a href="/edit-district/{{this.id}}"
+                                class="flex items-center gap-2 text-white bg-amber-400 hover:bg-amber-500 focus:ring-4 focus:ring-blue-300 focus:outline-none font-medium rounded-lg text-sm p-4">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                        </div>
+                        <a href="/detail-district/{{this.id}}"
+                            class="w-full flex items-center justify-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            Detail
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</main>
